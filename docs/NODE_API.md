@@ -15,7 +15,9 @@ Lint files for non-standard or incorrect documentation
 information, returning a potentially-empty string
 of lint information intended for human-readable output.
 
-**Parameters**
+Type: `function (indexes, args): Promise`
+
+_Parameters_
 
 -   `indexes` **([Array][7]&lt;[string][8]> | [string][8])** files to process
 -   `args` **[Object][9]** args
@@ -31,7 +33,9 @@ of lint information intended for human-readable output.
     -   `args.extension` **([string][8] \| [Array][7]&lt;[string][8]>)?** treat additional file extensions
         as JavaScript, extending the default set of `js`, `es6`, and `jsx`.
 
-**Examples**
+_Returns_ **[Promise][11]** promise with lint results
+
+_Examples_
 
 ```javascript
 documentation.lint('file.js').then(lintOutput => {
@@ -44,14 +48,16 @@ documentation.lint('file.js').then(lintOutput => {
 });
 ```
 
-Returns **[Promise][11]** promise with lint results
+* * *
 
 ## build
 
 Generate JavaScript documentation as a list of parsed JSDoc
 comments, given a root file as a path.
 
-**Parameters**
+Type: `function (indexes, args): Promise`
+
+_Parameters_
 
 -   `indexes` **([Array][7]&lt;[string][8]> | [string][8])** files to process
 -   `args` **[Object][9]** args
@@ -74,7 +80,9 @@ comments, given a root file as a path.
     -   `args.extension` **([string][8] \| [Array][7]&lt;[string][8]>)?** treat additional file extensions
         as JavaScript, extending the default set of `js`, `es6`, and `jsx`.
 
-**Examples**
+_Returns_ **[Promise][11]** results
+
+_Examples_
 
 ```javascript
 var documentation = require('documentation');
@@ -89,7 +97,7 @@ documentation.build(['index.js'], {
 });
 ```
 
-Returns **[Promise][11]** results
+* * *
 
 ## formats
 
@@ -98,17 +106,23 @@ and config as input and return Promises with results,
 like stringified JSON, markdown strings, or Vinyl objects for HTML
 output.
 
+Type: `function ()`
+
+* * *
+
 ## formats.html
 
 Formats documentation as HTML.
 
-**Parameters**
+_Parameters_
 
 -   `comments` **[Array][7]&lt;[Comment][12]>** parsed comments
 -   `config` **[Object][9]** Options that can customize the output
     -   `config.theme` **[string][8]** Name of a module used for an HTML theme. (optional, default `'default_theme'`)
 
-**Examples**
+_Returns_ **[Promise][11]&lt;[Array][7]&lt;[Object][9]>>** Promise with results
+
+_Examples_
 
 ```javascript
 var documentation = require('documentation');
@@ -122,19 +136,21 @@ documentation.build(['index.js'])
   });
 ```
 
-Returns **[Promise][11]&lt;[Array][7]&lt;[Object][9]>>** Promise with results
+* * *
 
 ## formats.markdown
 
 Formats documentation as
 [Markdown][13].
 
-**Parameters**
+_Parameters_
 
 -   `comments` **[Array][7]&lt;[Object][9]>** parsed comments
 -   `args` **[Object][9]** Options that can customize the output
 
-**Examples**
+_Returns_ **[Promise][11]&lt;[string][8]>** a promise of the eventual value
+
+_Examples_
 
 ```javascript
 var documentation = require('documentation');
@@ -148,17 +164,19 @@ documentation.build(['index.js'])
   });
 ```
 
-Returns **[Promise][11]&lt;[string][8]>** a promise of the eventual value
+* * *
 
 ## formats.json
 
 Formats documentation as a JSON string.
 
-**Parameters**
+_Parameters_
 
 -   `comments` **[Array][7]&lt;[Comment][12]>** parsed comments
 
-**Examples**
+_Returns_ **[Promise][11]&lt;[string][8]>** 
+
+_Examples_
 
 ```javascript
 var documentation = require('documentation');
@@ -172,7 +190,7 @@ documentation.build(['index.js'])
   });
 ```
 
-Returns **[Promise][11]&lt;[string][8]>** 
+* * *
 
 [1]: #lint
 

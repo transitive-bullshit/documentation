@@ -68,10 +68,25 @@ function buildMarkdownAST(
    */
   function generate(depth: number, comment: Comment) {
     function typeSection(comment: Comment) {
-      return (
-        comment.type &&
-        u('paragraph', [u('text', 'Type: ')].concat(formatType(comment.type)))
-      );
+      if (comment.type) {
+        return u(
+          'paragraph',
+          [u('text', 'Type: ')].concat(formatType(comment.type))
+        );
+      } else if (comment.kind) {
+        var c = Object.assign(
+          {
+            type: 'FunctionType'
+          },
+          comment,
+          {
+            result:
+              comment.returns && comment.returns[0] && comment.returns[0].type
+          }
+        );
+
+        return u('paragraph', [u('text', 'Type: ')].concat(formatType(c)));
+      }
     }
 
     function paramList(params: Array<CommentTag>) {
@@ -245,10 +260,12 @@ function buildMarkdownAST(
     }
 
     function githubLink(comment: Comment) {
+      // const isSingleLine = comment.context.loc.start.line === comment.context.loc.end.line
       return (
         comment.context &&
         comment.context.github &&
         u('paragraph', [
+          u('text', 'Source: '),
           u(
             'link',
             {
@@ -260,9 +277,7 @@ function buildMarkdownAST(
                 'text',
                 comment.context.github.path +
                   ':' +
-                  comment.context.loc.start.line +
-                  '-' +
-                  comment.context.loc.end.line
+                  comment.context.loc.start.line
               )
             ]
           )
@@ -320,11 +335,11 @@ function buildMarkdownAST(
 
     return [u('thematicBreak')]
       .concat([u('heading', { depth }, [u('text', comment.name || '')])])
-      .concat(githubLink(comment))
       .concat(augmentsLink(comment))
       .concat(seeLink(comment))
       .concat(comment.description ? comment.description.children : [])
       .concat(typeSection(comment))
+      .concat(githubLink(comment))
       .concat(paramSection(comment))
       .concat(propertySection(comment))
       .concat(throwsSection(comment))

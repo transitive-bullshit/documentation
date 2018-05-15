@@ -58,6 +58,9 @@ function link(text, getHref, description) {
  */
 function commaList(getHref, items, start, end, sep) {
   let res = [];
+  if (!items || !items.length) {
+    return res;
+  }
   if (start) {
     res.push(t(start));
   }
@@ -107,7 +110,9 @@ function formatType(getHref: Function, node: ?Object) {
     return [t('any')];
   }
 
-  switch (node.type) {
+  var type = typeof node.type === 'object' ? node.type.type : node.type;
+
+  switch (type) {
     case Syntax.NullableLiteral:
       return [t('?')];
     case Syntax.AllLiteral:
@@ -144,30 +149,45 @@ function formatType(getHref: Function, node: ?Object) {
       return [t(node.key)];
 
     case Syntax.FunctionType:
-      result = [t('function (')];
+      try {
+        var params = node.params.map(p => p.name);
+        var res =
+          node.result && node.result.name ? `: ${node.result.name}` : '';
+        return [u('inlineCode', `function (${params.join(', ')})${res}`)];
+        /*
+        result = [t('function (')];
 
-      if (node['this']) {
-        if (node['new']) {
-          result.push(t('new: '));
-        } else {
-          result.push(t('this: '));
+        if (node['this']) {
+          if (node['new']) {
+            result.push(t('new: '));
+          } else {
+            result.push(t('this: '));
+          }
+
+          result = result.concat(formatType(getHref, node['this']));
+
+          if (node.params.length !== 0) {
+            result.push(t(', '));
+          }
         }
 
-        result = result.concat(formatType(getHref, node['this']));
-
-        if (node.params.length !== 0) {
-          result.push(t(', '));
+        try {
+          result = result.concat(commaList(getHref, node.params, '', ')'));
+        } catch (err) {
+          result = result.concat([ ')' ]);
         }
-      }
 
-      result = result.concat(commaList(getHref, node.params, '', ')'));
+        if (node.result) {
+          result = result.concat(
+            [t(': ')].concat(formatType(getHref, node.result))
+          );
+        }
 
-      if (node.result) {
-        result = result.concat(
-          [t(': ')].concat(formatType(getHref, node.result))
-        );
+        return result;
+        */
+      } catch (err) {
+        return [u('inlineCode', 'function ()')];
       }
-      return result;
 
     case Syntax.RestType:
       // note that here we diverge from doctrine itself, which
@@ -191,7 +211,7 @@ function formatType(getHref: Function, node: ?Object) {
       return [u('inlineCode', String(node.value))];
 
     default:
-      throw new Error('Unknown type ' + node.type);
+      throw new Error('Unknown type ' + type);
   }
 }
 
