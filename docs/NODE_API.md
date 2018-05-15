@@ -31,7 +31,7 @@ Type: `function (indexes, args): Promise`
     -   `args.extension` **([string][8] \| [Array][7]&lt;[string][8]>)?** treat additional file extensions
         as JavaScript, extending the default set of `js`, `es6`, and `jsx`.
 
-Examples:
+Example:
 
 ```javascript
 documentation.lint('file.js').then(lintOutput => {
@@ -74,7 +74,7 @@ Type: `function (indexes, args): Promise`
     -   `args.extension` **([string][8] \| [Array][7]&lt;[string][8]>)?** treat additional file extensions
         as JavaScript, extending the default set of `js`, `es6`, and `jsx`.
 
-Examples:
+Example:
 
 ```javascript
 var documentation = require('documentation');
@@ -110,7 +110,7 @@ Formats documentation as HTML.
 -   `config` **[Object][9]** Options that can customize the output
     -   `config.theme` **[string][8]** Name of a module used for an HTML theme. (optional, default `'default_theme'`)
 
-Examples:
+Example:
 
 ```javascript
 var documentation = require('documentation');
@@ -134,7 +134,7 @@ Formats documentation as
 -   `comments` **[Array][7]&lt;[Object][9]>** parsed comments
 -   `args` **[Object][9]** Options that can customize the output
 
-Examples:
+Example:
 
 ```javascript
 var documentation = require('documentation');
@@ -156,7 +156,7 @@ Formats documentation as a JSON string.
 
 -   `comments` **[Array][7]&lt;[Comment][11]>** parsed comments
 
-Examples:
+Example:
 
 ```javascript
 var documentation = require('documentation');

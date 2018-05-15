@@ -172,9 +172,10 @@ function buildMarkdownAST(
     }
 
     function examplesSection(comment: Comment) {
+      const isSingle = comment.examples.length === 1;
       return (
         comment.examples.length > 0 &&
-        [u('text', 'Examples:')].concat(
+        [u('text', isSingle ? 'Example:' : 'Examples:')].concat(
           comment.examples.reduce(function(memo, example) {
             const language = hljsOptions.highlightAuto
               ? hljs.highlightAuto(example.description).language
