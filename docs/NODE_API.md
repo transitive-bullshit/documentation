@@ -17,8 +17,6 @@ of lint information intended for human-readable output.
 
 Type: `function (indexes, args): Promise`
 
-Parameters:
-
 -   `indexes` **([Array][7]&lt;[string][8]> | [string][8])** files to process
 -   `args` **[Object][9]** args
     -   `args.external` **[Array][7]&lt;[string][8]>** a string regex / glob match pattern
@@ -54,8 +52,6 @@ Generate JavaScript documentation as a list of parsed JSDoc
 comments, given a root file as a path.
 
 Type: `function (indexes, args): Promise`
-
-Parameters:
 
 -   `indexes` **([Array][7]&lt;[string][8]> | [string][8])** files to process
 -   `args` **[Object][9]** args
@@ -110,8 +106,6 @@ Type: `function ()`
 
 Formats documentation as HTML.
 
-Parameters:
-
 -   `comments` **[Array][7]&lt;[Comment][11]>** parsed comments
 -   `config` **[Object][9]** Options that can customize the output
     -   `config.theme` **[string][8]** Name of a module used for an HTML theme. (optional, default `'default_theme'`)
@@ -137,8 +131,6 @@ documentation.build(['index.js'])
 Formats documentation as
 [Markdown][12].
 
-Parameters:
-
 -   `comments` **[Array][7]&lt;[Object][9]>** parsed comments
 -   `args` **[Object][9]** Options that can customize the output
 
@@ -161,8 +153,6 @@ documentation.build(['index.js'])
 ## formats.json
 
 Formats documentation as a JSON string.
-
-Parameters:
 
 -   `comments` **[Array][7]&lt;[Comment][11]>** parsed comments
 

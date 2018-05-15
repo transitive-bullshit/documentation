@@ -128,7 +128,7 @@ function buildMarkdownAST(
     function paramSection(comment: Comment) {
       return (
         comment.params.length > 0 && [
-          u('text', 'Parameters:'),
+          // u('text', 'Parameters:'),
           paramList(comment.params)
         ]
       );
@@ -137,7 +137,7 @@ function buildMarkdownAST(
     function propertySection(comment: Comment) {
       return (
         comment.properties.length > 0 && [
-          u('text', 'Properties:'),
+          // u('text', 'Properties:'),
           propertyList(comment.properties)
         ]
       );
