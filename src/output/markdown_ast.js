@@ -128,7 +128,7 @@ function buildMarkdownAST(
     function paramSection(comment: Comment) {
       return (
         comment.params.length > 0 && [
-          u('emphasis', [u('text', 'Parameters')]),
+          u('text', 'Parameters:'),
           paramList(comment.params)
         ]
       );
@@ -137,7 +137,7 @@ function buildMarkdownAST(
     function propertySection(comment: Comment) {
       return (
         comment.properties.length > 0 && [
-          u('emphasis', [u('text', 'Properties')]),
+          u('text', 'Properties:'),
           propertyList(comment.properties)
         ]
       );
@@ -174,7 +174,7 @@ function buildMarkdownAST(
     function examplesSection(comment: Comment) {
       return (
         comment.examples.length > 0 &&
-        [u('emphasis', [u('text', 'Examples')])].concat(
+        [u('text', 'Examples:')].concat(
           comment.examples.reduce(function(memo, example) {
             const language = hljsOptions.highlightAuto
               ? hljs.highlightAuto(example.description).language
@@ -198,7 +198,7 @@ function buildMarkdownAST(
           u(
             'paragraph',
             [
-              u('emphasis', [u('text', 'Returns')]),
+              u('text', 'Returns:'),
               u('text', ' '),
               u('strong', formatType(returns.type)),
               u('text', ' ')
@@ -219,7 +219,8 @@ function buildMarkdownAST(
               u(
                 'paragraph',
                 [
-                  u('text', 'Throws '),
+                  u('text', 'Throws:'),
+                  u('text', ' '),
                   u('strong', formatType(returns.type)),
                   u('text', ' ')
                 ].concat(
@@ -237,7 +238,7 @@ function buildMarkdownAST(
         comment.augments.length > 0 &&
         u('paragraph', [
           u('strong', [
-            u('text', 'Extends '),
+            u('text', 'Extends: '),
             u('text', comment.augments.map(tag => tag.name).join(', '))
           ])
         ])
@@ -260,7 +261,6 @@ function buildMarkdownAST(
     }
 
     function githubLink(comment: Comment) {
-      // const isSingleLine = comment.context.loc.start.line === comment.context.loc.end.line
       return (
         comment.context &&
         comment.context.github &&
@@ -333,48 +333,63 @@ function buildMarkdownAST(
         .filter(Boolean);
     }
 
-    return [u('thematicBreak')]
-      .concat([u('heading', { depth }, [u('text', comment.name || '')])])
-      .concat(augmentsLink(comment))
-      .concat(seeLink(comment))
-      .concat(comment.description ? comment.description.children : [])
-      .concat(typeSection(comment))
-      .concat(githubLink(comment))
-      .concat(paramSection(comment))
-      .concat(propertySection(comment))
-      .concat(throwsSection(comment))
-      .concat(returnsSection(comment))
-      .concat(examplesSection(comment))
-      .concat(metaSection(comment))
-      .concat(
-        !!comment.members.global.length &&
-          comment.members.global.reduce(
-            (memo, child) => memo.concat(generate(depth + 1, child)),
-            []
-          )
-      )
-      .concat(
-        !!comment.members.instance.length &&
-          comment.members.instance.reduce(
-            (memo, child) => memo.concat(generate(depth + 1, child)),
-            []
-          )
-      )
-      .concat(
-        !!comment.members.static.length &&
-          comment.members.static.reduce(
-            (memo, child) => memo.concat(generate(depth + 1, child)),
-            []
-          )
-      )
-      .concat(
-        !!comment.members.inner.length &&
-          comment.members.inner.reduce(
-            (memo, child) => memo.concat(generate(depth + 1, child)),
-            []
-          )
-      )
-      .filter(Boolean);
+    var heading = [u('text', comment.name || '')];
+    if (comment.context && comment.context.github) {
+      heading = [
+        u(
+          'link',
+          {
+            url: comment.context.github.url
+          },
+          heading
+        )
+      ];
+    }
+
+    return (
+      [u('thematicBreak')]
+        .concat([u('heading', { depth }, heading)])
+        .concat(augmentsLink(comment))
+        .concat(seeLink(comment))
+        .concat(comment.description ? comment.description.children : [])
+        .concat(typeSection(comment))
+        .concat(paramSection(comment))
+        .concat(propertySection(comment))
+        .concat(throwsSection(comment))
+        // .concat(returnsSection(comment))
+        // .concat(githubLink(comment))
+        .concat(examplesSection(comment))
+        .concat(metaSection(comment))
+        .concat(
+          !!comment.members.global.length &&
+            comment.members.global.reduce(
+              (memo, child) => memo.concat(generate(depth + 1, child)),
+              []
+            )
+        )
+        .concat(
+          !!comment.members.instance.length &&
+            comment.members.instance.reduce(
+              (memo, child) => memo.concat(generate(depth + 1, child)),
+              []
+            )
+        )
+        .concat(
+          !!comment.members.static.length &&
+            comment.members.static.reduce(
+              (memo, child) => memo.concat(generate(depth + 1, child)),
+              []
+            )
+        )
+        .concat(
+          !!comment.members.inner.length &&
+            comment.members.inner.reduce(
+              (memo, child) => memo.concat(generate(depth + 1, child)),
+              []
+            )
+        )
+        .filter(Boolean)
+    );
   }
 
   let root = rerouteLinks(
