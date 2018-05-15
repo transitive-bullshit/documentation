@@ -113,7 +113,7 @@ function buildMarkdownAST(
     function paramSection(comment: Comment) {
       return (
         comment.params.length > 0 && [
-          u('strong', [u('text', 'Parameters')]),
+          u('emphasis', [u('text', 'Parameters')]),
           paramList(comment.params)
         ]
       );
@@ -122,7 +122,7 @@ function buildMarkdownAST(
     function propertySection(comment: Comment) {
       return (
         comment.properties.length > 0 && [
-          u('strong', [u('text', 'Properties')]),
+          u('emphasis', [u('text', 'Properties')]),
           propertyList(comment.properties)
         ]
       );
@@ -159,7 +159,7 @@ function buildMarkdownAST(
     function examplesSection(comment: Comment) {
       return (
         comment.examples.length > 0 &&
-        [u('strong', [u('text', 'Examples')])].concat(
+        [u('emphasis', [u('text', 'Examples')])].concat(
           comment.examples.reduce(function(memo, example) {
             const language = hljsOptions.highlightAuto
               ? hljs.highlightAuto(example.description).language
@@ -183,7 +183,8 @@ function buildMarkdownAST(
           u(
             'paragraph',
             [
-              u('text', 'Returns '),
+              u('emphasis', [u('text', 'Returns')]),
+              u('text', ' '),
               u('strong', formatType(returns.type)),
               u('text', ' ')
             ].concat(returns.description ? returns.description.children : [])
@@ -317,7 +318,8 @@ function buildMarkdownAST(
         .filter(Boolean);
     }
 
-    return [u('heading', { depth }, [u('text', comment.name || '')])]
+    return [u('thematicBreak')]
+      .concat([u('heading', { depth }, [u('text', comment.name || '')])])
       .concat(githubLink(comment))
       .concat(augmentsLink(comment))
       .concat(seeLink(comment))
@@ -325,9 +327,9 @@ function buildMarkdownAST(
       .concat(typeSection(comment))
       .concat(paramSection(comment))
       .concat(propertySection(comment))
-      .concat(examplesSection(comment))
       .concat(throwsSection(comment))
       .concat(returnsSection(comment))
+      .concat(examplesSection(comment))
       .concat(metaSection(comment))
       .concat(
         !!comment.members.global.length &&
@@ -372,6 +374,7 @@ function buildMarkdownAST(
             []
           )
         )
+        .concat([u('thematicBreak')])
     )
   );
 
