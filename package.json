@@ -1,7 +1,7 @@
 {
   "name": "documentation-custom-markdown",
   "description": "a documentation generator",
-  "version": "6.3.3",
+  "version": "6.3.4",
   "author": "Tom MacWright",
   "bin": {
     "documentation": "./bin/documentation.js"
