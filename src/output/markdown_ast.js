@@ -347,7 +347,7 @@ function buildMarkdownAST(
       ];
     }
 
-    const prefix = config.markdownToc || depth > 1 ? [u('thematicBreak')] : [];
+    const prefix = config.markdownToc || depth > 2 ? [u('thematicBreak')] : [];
 
     return (
       prefix
