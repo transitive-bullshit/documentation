@@ -347,8 +347,13 @@ function buildMarkdownAST(
       ];
     }
 
+    const prefix =
+      config.markdownToc || depth > 1
+        ? [] // [ u('thematicBreak') ]
+        : [];
+
     return (
-      [u('thematicBreak')]
+      prefix
         .concat([u('heading', { depth }, heading)])
         .concat(augmentsLink(comment))
         .concat(seeLink(comment))
@@ -405,7 +410,7 @@ function buildMarkdownAST(
             []
           )
         )
-        .concat([u('thematicBreak')])
+        .concat(config.markdownToc ? [u('thematicBreak')] : [])
     )
   );
 
